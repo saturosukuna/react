@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Form</title>
+  <!-- React CDN -->
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <!-- Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+  // Define a functional component using React and JSX
+  function MyForm() {
+    const [formData, setFormData] = React.useState({});
+
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post('https://jsonplaceholder.typicode.com/posts', formData);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    };
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" name="name" onChange={handleChange} />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" onChange={handleChange} />
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    );
+  }
+
+  // Render the MyForm component into the DOM
+  ReactDOM.render(<MyForm />, document.getElementById('root'));
+</script>
+
+</body>
+</html>
